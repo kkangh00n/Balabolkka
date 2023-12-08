@@ -1,0 +1,17 @@
+spring:
+
+  profiles:
+    active: local
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+    generate-ddl: true
+
+springdoc:
+  swagger-ui:
+    path: /api-docs
