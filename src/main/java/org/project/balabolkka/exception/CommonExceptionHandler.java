@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
@@ -19,6 +20,7 @@ public class CommonExceptionHandler {
     private final String INTERNAL_SERVER_ERROR_MESSAGE = "서버 에러입니다.";
 
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResult method(MethodArgumentNotValidException me){
 
         BindingResult bindingResult = me.getBindingResult();
@@ -34,16 +36,19 @@ public class CommonExceptionHandler {
     }
 
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResult notFoundExceptionHandler(NotFoundException ne){
         return new ErrorResult(HttpStatus.NOT_EXTENDED.value(), ne.getMessage());
     }
 
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResult alreadyExceptionHandler(AlreadyExistsException ae){
         return new ErrorResult(HttpStatus.BAD_REQUEST.value(), ae.getMessage());
     }
 
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResult serverError(Exception e){
         return new ErrorResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), INTERNAL_SERVER_ERROR_MESSAGE);
     }
