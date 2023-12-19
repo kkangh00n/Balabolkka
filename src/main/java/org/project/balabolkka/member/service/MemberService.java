@@ -13,6 +13,7 @@ import org.project.balabolkka.member.dto.MemberUpdateRequestDto;
 import org.project.balabolkka.member.exception.MemberExceptionMessage;
 import org.project.balabolkka.member.mapper.MemberMapper;
 import org.project.balabolkka.member.repository.MemberRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public MemberDataResponseDto join(MemberSaveRequestDto memberSaveRequestDto){
 
@@ -30,6 +32,7 @@ public class MemberService {
         }
 
         Member joinMember = MemberMapper.toEntity(memberSaveRequestDto);
+        joinMember.setPassword(passwordEncoder.encode(memberSaveRequestDto.getPassword()));
         Member saveMember = memberRepository.save(joinMember);
 
         return MemberMapper.dataResponseDtoOfMember(saveMember);

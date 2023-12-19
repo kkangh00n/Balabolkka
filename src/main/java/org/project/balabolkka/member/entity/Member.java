@@ -46,4 +46,8 @@ public class Member extends BaseEntity {
         this.address = updateRequestDto.getAddress();
     }
 
+    public void setPassword(String password){
+        this.password = password;
+    }
+
 }

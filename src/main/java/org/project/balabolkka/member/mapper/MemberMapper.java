@@ -11,7 +11,6 @@ public class MemberMapper {
         return Member.builder()
             .name(memberSaveRequestDto.getName())
             .email(memberSaveRequestDto.getEmail())
-            .password(memberSaveRequestDto.getPassword())
             .address(memberSaveRequestDto.getAddress())
             .birth(memberSaveRequestDto.getBirth())
             .build();
