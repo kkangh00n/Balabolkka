@@ -1,4 +1,4 @@
-package org.project.balabolkka.exception;
+package org.project.balabolkka.member.exception;
 
 
 import java.util.List;
@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class CommonExceptionHandler {
-
-    private final String INTERNAL_SERVER_ERROR_MESSAGE = "서버 에러입니다.";
+public class MemberExceptionHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -45,12 +43,6 @@ public class CommonExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResult alreadyExceptionHandler(AlreadyExistsException ae){
         return new ErrorResult(HttpStatus.BAD_REQUEST.value(), ae.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResult serverError(Exception e){
-        return new ErrorResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), INTERNAL_SERVER_ERROR_MESSAGE);
     }
 
 }
