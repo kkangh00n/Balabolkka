@@ -10,7 +10,8 @@
 
 ## 프로젝트 기술 스택 🧑‍💻
 - Java 17
-- SpringBoot 3.2.0
+- Spring Boot 3.2.0
+- Spring Security 3.1.2
 - JPA
 - MySQL
 - Gradle
