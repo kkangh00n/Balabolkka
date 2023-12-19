@@ -28,7 +28,7 @@ public class LoginService{
             throw new BadCredentialsException(LoginExceptionMessage.WRONG_PASSWORD.getMessage());
         }
 
-        response.setHeader("authentication", "success");
+        response.setHeader("Authorization", "success");
 
         return "로그인 완료";
     }
