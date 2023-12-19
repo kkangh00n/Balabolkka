@@ -2,6 +2,7 @@ package org.project.balabolkka.login.service;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.project.balabolkka.jwt.provider.JwtTokenProvider;
 import org.project.balabolkka.login.dto.LoginRequest;
 import org.project.balabolkka.login.exception.LoginExceptionMessage;
 import org.project.balabolkka.member.entity.Member;
@@ -18,6 +19,7 @@ public class LoginService{
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder encoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public String login(LoginRequest loginRequest, HttpServletResponse response){
 
@@ -28,7 +30,9 @@ public class LoginService{
             throw new BadCredentialsException(LoginExceptionMessage.WRONG_PASSWORD.getMessage());
         }
 
-        response.setHeader("Authorization", "success");
+        String token = jwtTokenProvider.createToken(loginMember.getEmail());
+
+        response.setHeader("Authorization", token);
 
         return "로그인 완료";
     }
