@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "jwt")
 public class JwtConfig {
 
-    private String header;
     private String clientSecret;
     private int expirySeconds;
+    private int expirySecondsRefresh;
 
 }
