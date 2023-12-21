@@ -40,14 +40,15 @@ public class LoginService{
 
         //accesstoken 헤더 세팅
         response.setHeader("AccessToken", token.getAccessToken());
+        response.setHeader("RefreshToken", token.getRefreshToken());
 
         return "로그인 완료";
     }
 
     public Token createJwtToken(String email){
         Token token = jwtTokenProvider.createJwtToken(email);
-        //refreshtoken 저장
-        refreshTokenService.login(token);
+        //refreshtoken DB 저장
+        refreshTokenService.createRefreshToken(token);
         return token;
     }
 }

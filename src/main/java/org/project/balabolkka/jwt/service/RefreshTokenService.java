@@ -14,7 +14,7 @@ public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
-    public void login(Token token){
+    public void createRefreshToken(Token token){
 
         String email = token.getEmail();
         if(refreshTokenRepository.existsRefreshTokenByEmail(email)){
@@ -27,6 +27,12 @@ public class RefreshTokenService {
             .build();
 
         refreshTokenRepository.save(refreshToken);
+    }
+
+    @Transactional
+    public RefreshToken getRefreshTokenByToken(String refreshToken){
+        return refreshTokenRepository.findRefreshTokenByToken(refreshToken)
+            .orElseThrow();
     }
 
 }

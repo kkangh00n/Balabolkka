@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class JwtConfig {
 
     private String clientSecret;
-    private int expirySeconds;
-    private int expirySecondsRefresh;
+    private int expiryMinute;
+    private int expiryMinuteRefresh;
 
 }
