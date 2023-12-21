@@ -14,10 +14,10 @@ public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
-    public void createRefreshToken(Token token){
+    public void createRefreshToken(Token token) {
 
         String email = token.getEmail();
-        if(refreshTokenRepository.existsRefreshTokenByEmail(email)){
+        if (refreshTokenRepository.existsRefreshTokenByEmail(email)) {
             refreshTokenRepository.deleteRefreshTokenByEmail(email);
         }
 
@@ -30,7 +30,7 @@ public class RefreshTokenService {
     }
 
     @Transactional
-    public RefreshToken getRefreshTokenByToken(String refreshToken){
+    public RefreshToken getRefreshTokenByToken(String refreshToken) {
         return refreshTokenRepository.findRefreshTokenByToken(refreshToken)
             .orElseThrow();
     }

@@ -40,17 +40,20 @@ public class JwtAuthenticationFilter extends GenericFilter {
             //AccessToken 유효 시간이 지났을 때
             else {
                 //RefreshToken 유효 시간 지나기 전
-                if(jwtTokenProvider.validateToken(refreshToken)){
-                    RefreshToken refreshTokenEntity = refreshTokenService.getRefreshTokenByToken(refreshToken);
+                if (jwtTokenProvider.validateToken(refreshToken)) {
+                    RefreshToken refreshTokenEntity = refreshTokenService.getRefreshTokenByToken(
+                        refreshToken);
                     String email = refreshTokenEntity.getEmail();
                     Token newToken = jwtTokenProvider.createJwtToken(email);
 
-                    ((HttpServletResponse)response).setHeader("AccessToken", newToken.getAccessToken());
-                    Authentication authentication = jwtTokenProvider.getAuthentication(newToken.getAccessToken());
+                    ((HttpServletResponse) response).setHeader("AccessToken",
+                        newToken.getAccessToken());
+                    Authentication authentication = jwtTokenProvider.getAuthentication(
+                        newToken.getAccessToken());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
                 //RefreshToken 유효 시간이 지났을 때
-                else{
+                else {
                     throw new RuntimeException("다시 로그인 해 주세요");
                 }
             }

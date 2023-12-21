@@ -12,7 +12,7 @@ public class LoginExceptionHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResult badCredentialsExceptionHandler(BadCredentialsException be){
+    public ErrorResult badCredentialsExceptionHandler(BadCredentialsException be) {
         return new ErrorResult(HttpStatus.BAD_REQUEST.value(), be.getMessage());
     }
 

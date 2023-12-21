@@ -52,12 +52,12 @@ public class Member extends BaseEntity implements UserDetails {
         this.role = Role.MEMBER;
     }
 
-    public void update(MemberUpdateRequestDto updateRequestDto){
+    public void update(MemberUpdateRequestDto updateRequestDto) {
         this.email = updateRequestDto.getEmail();
         this.address = updateRequestDto.getAddress();
     }
 
-    public void setPassword(String password){
+    public void setPassword(String password) {
         this.password = password;
     }
 

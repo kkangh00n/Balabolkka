@@ -62,7 +62,7 @@ public class JwtTokenProvider {
                 .build()
                 .parseClaimsJws(accessToken);
             return !claims.getBody().getExpiration().before(new Date());
-        }catch (ExpiredJwtException e){
+        } catch (ExpiredJwtException e) {
             return false;
         }
     }

@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ErrorResult<T> {
+
     int code;
     T data;
 }

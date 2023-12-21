@@ -31,28 +31,30 @@ public class MemberController {
 
     @Operation(summary = "회원 가입")
     @PostMapping
-    public ResponseEntity<MemberDataResponseDto> join(@Validated @RequestBody MemberSaveRequestDto memberSaveRequestDto){
+    public ResponseEntity<MemberDataResponseDto> join(
+        @Validated @RequestBody MemberSaveRequestDto memberSaveRequestDto) {
         MemberDataResponseDto joinMember = memberService.join(memberSaveRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(joinMember);
     }
 
     @Operation(summary = "회원 전체 조회")
     @GetMapping
-    public ResponseEntity<List<MemberResponseDto>> getAll(){
+    public ResponseEntity<List<MemberResponseDto>> getAll() {
         List<MemberResponseDto> allMember = memberService.getAll();
         return ResponseEntity.ok(allMember);
     }
 
     @Operation(summary = "회원 단일 조회")
     @GetMapping("/{memberId}")
-    public ResponseEntity<MemberDataResponseDto> getOne(@PathVariable("memberId") Long memberId){
+    public ResponseEntity<MemberDataResponseDto> getOne(@PathVariable("memberId") Long memberId) {
         MemberDataResponseDto member = memberService.getOne(memberId);
         return ResponseEntity.ok(member);
     }
 
     @Operation(summary = "회원 정보 수정")
     @PatchMapping("/{memberId}")
-    public ResponseEntity<Boolean> update(@PathVariable("memberId") Long memberId, @Validated @RequestBody MemberUpdateRequestDto memberUpdateRequestDto){
+    public ResponseEntity<Boolean> update(@PathVariable("memberId") Long memberId,
+        @Validated @RequestBody MemberUpdateRequestDto memberUpdateRequestDto) {
         memberService.update(memberId, memberUpdateRequestDto);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(true);
@@ -60,7 +62,7 @@ public class MemberController {
 
     @Operation(summary = "회원 탈퇴")
     @DeleteMapping("/{memberId}")
-    public ResponseEntity<Boolean> delete(@PathVariable("memberId") Long memberId){
+    public ResponseEntity<Boolean> delete(@PathVariable("memberId") Long memberId) {
         memberService.delete(memberId);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(true);

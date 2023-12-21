@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class LoginService{
+public class LoginService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder encoder;
@@ -24,14 +24,15 @@ public class LoginService{
     private final RefreshTokenService refreshTokenService;
 
     @Transactional
-    public String login(LoginRequest loginRequest, HttpServletResponse response){
+    public String login(LoginRequest loginRequest, HttpServletResponse response) {
 
         //이메일을 통해 Member 가져옴
         Member loginMember = memberRepository.findMemberByEmail(loginRequest.getEmail())
-            .orElseThrow(() -> new BadCredentialsException(LoginExceptionMessage.WRONG_PASSWORD.getMessage()));
+            .orElseThrow(() -> new BadCredentialsException(
+                LoginExceptionMessage.WRONG_PASSWORD.getMessage()));
 
         //password 확인
-        if(!encoder.matches(loginRequest.getPassword(), loginMember.getPassword())){
+        if (!encoder.matches(loginRequest.getPassword(), loginMember.getPassword())) {
             throw new BadCredentialsException(LoginExceptionMessage.WRONG_PASSWORD.getMessage());
         }
 
@@ -45,7 +46,7 @@ public class LoginService{
         return "로그인 완료";
     }
 
-    public Token createJwtToken(String email){
+    public Token createJwtToken(String email) {
         Token token = jwtTokenProvider.createJwtToken(email);
         //refreshtoken DB 저장
         refreshTokenService.createRefreshToken(token);

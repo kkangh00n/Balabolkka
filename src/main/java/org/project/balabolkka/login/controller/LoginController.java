@@ -23,7 +23,8 @@ public class LoginController {
 
     @Operation(summary = "로그인")
     @PostMapping("/login")
-    public ResponseEntity login(@Validated @RequestBody LoginRequest loginRequest, HttpServletResponse response){
+    public ResponseEntity login(@Validated @RequestBody LoginRequest loginRequest,
+        HttpServletResponse response) {
 
         String loginToken = loginService.login(loginRequest, response);
 

@@ -19,7 +19,7 @@ public class MemberExceptionHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResult method(MethodArgumentNotValidException me){
+    public ErrorResult method(MethodArgumentNotValidException me) {
 
         BindingResult bindingResult = me.getBindingResult();
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -35,13 +35,13 @@ public class MemberExceptionHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResult notFoundExceptionHandler(NotFoundException ne){
+    public ErrorResult notFoundExceptionHandler(NotFoundException ne) {
         return new ErrorResult(HttpStatus.NOT_EXTENDED.value(), ne.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResult alreadyExceptionHandler(AlreadyExistsException ae){
+    public ErrorResult alreadyExceptionHandler(AlreadyExistsException ae) {
         return new ErrorResult(HttpStatus.BAD_REQUEST.value(), ae.getMessage());
     }
 

@@ -1,13 +1,13 @@
 package org.project.balabolkka.member.mapper;
 
 import org.project.balabolkka.member.dto.MemberDataResponseDto;
-import org.project.balabolkka.member.entity.Member;
 import org.project.balabolkka.member.dto.MemberResponseDto;
 import org.project.balabolkka.member.dto.MemberSaveRequestDto;
+import org.project.balabolkka.member.entity.Member;
 
 public class MemberMapper {
 
-    public static Member toEntity(MemberSaveRequestDto memberSaveRequestDto){
+    public static Member toEntity(MemberSaveRequestDto memberSaveRequestDto) {
         return Member.builder()
             .name(memberSaveRequestDto.getName())
             .email(memberSaveRequestDto.getEmail())
@@ -16,7 +16,7 @@ public class MemberMapper {
             .build();
     }
 
-    public static MemberResponseDto responseDtoOfMember(Member member){
+    public static MemberResponseDto responseDtoOfMember(Member member) {
         return MemberResponseDto.builder()
             .id(member.getId())
             .name(member.getName())
@@ -24,7 +24,7 @@ public class MemberMapper {
             .build();
     }
 
-    public static MemberDataResponseDto dataResponseDtoOfMember(Member member){
+    public static MemberDataResponseDto dataResponseDtoOfMember(Member member) {
         return MemberDataResponseDto.builder()
             .id(member.getId())
             .name(member.getName())
