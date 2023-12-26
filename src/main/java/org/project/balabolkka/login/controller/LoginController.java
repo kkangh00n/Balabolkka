@@ -26,9 +26,7 @@ public class LoginController {
     public ResponseEntity login(@Validated @RequestBody LoginRequest loginRequest,
         HttpServletResponse response) {
 
-        String loginToken = loginService.login(loginRequest, response);
-
-        return ResponseEntity.ok(loginToken);
+        return ResponseEntity.ok(loginService.login(loginRequest, response));
     }
 
 }

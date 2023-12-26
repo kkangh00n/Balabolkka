@@ -24,7 +24,7 @@ public class LoginService {
     private final RefreshTokenService refreshTokenService;
 
     @Transactional
-    public String login(LoginRequest loginRequest, HttpServletResponse response) {
+    public Token login(LoginRequest loginRequest, HttpServletResponse response) {
 
         //이메일을 통해 Member 가져옴
         Member loginMember = memberRepository.findMemberByEmail(loginRequest.getEmail())
@@ -37,13 +37,7 @@ public class LoginService {
         }
 
         //token 생성
-        Token token = createJwtToken(loginMember.getEmail());
-
-        //accesstoken 헤더 세팅
-        response.setHeader("AccessToken", token.getAccessToken());
-        response.setHeader("RefreshToken", token.getRefreshToken());
-
-        return "로그인 완료";
+        return createJwtToken(loginMember.getEmail());
     }
 
     public Token createJwtToken(String email) {
