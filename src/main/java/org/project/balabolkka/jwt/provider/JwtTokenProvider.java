@@ -8,6 +8,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import org.project.balabolkka.jwt.config.JwtConfig;
+import org.project.balabolkka.jwt.service.RefreshTokenService;
 import org.project.balabolkka.jwt.service.SecurityService;
 import org.project.balabolkka.jwt.token.Token;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +22,7 @@ public class JwtTokenProvider {
 
     private final JwtConfig jwtConfig;
     private final SecurityService securityService;
+    private final RefreshTokenService refreshTokenService;
 
     public Token createJwtToken(String email) {
         Claims claims = Jwts.claims().setSubject(email);
@@ -29,6 +31,9 @@ public class JwtTokenProvider {
 
         String accessToken = createAccessToken(claims, now);
         String refreshToken = createRefreshToken(claims, now);
+
+        //refreshToken DB 저장
+        refreshTokenService.createRefreshToken(refreshToken, email);
 
         return new Token(accessToken, refreshToken, email);
     }

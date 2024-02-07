@@ -3,7 +3,6 @@ package org.project.balabolkka.jwt.service;
 import lombok.RequiredArgsConstructor;
 import org.project.balabolkka.jwt.domain.RefreshToken;
 import org.project.balabolkka.jwt.repository.RefreshTokenRepository;
-import org.project.balabolkka.jwt.token.Token;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,19 +13,18 @@ public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
-    public void createRefreshToken(Token token) {
+    public void createRefreshToken(String refreshToken, String email) {
 
-        String email = token.getEmail();
         if (refreshTokenRepository.existsRefreshTokenByEmail(email)) {
             refreshTokenRepository.deleteRefreshTokenByEmail(email);
         }
 
-        RefreshToken refreshToken = RefreshToken.builder()
-            .token(token.getRefreshToken())
-            .email(token.getEmail())
+        RefreshToken refreshTokenEntity = RefreshToken.builder()
+            .token(refreshToken)
+            .email(email)
             .build();
 
-        refreshTokenRepository.save(refreshToken);
+        refreshTokenRepository.save(refreshTokenEntity);
     }
 
     @Transactional
