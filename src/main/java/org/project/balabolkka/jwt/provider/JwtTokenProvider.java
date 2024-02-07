@@ -4,13 +4,18 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SecurityException;
 import java.security.Key;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
+import org.project.balabolkka.exception.ValidationException;
 import org.project.balabolkka.jwt.config.JwtConfig;
+import org.project.balabolkka.jwt.exception.JwtErrorMessage;
 import org.project.balabolkka.jwt.service.RefreshTokenService;
 import org.project.balabolkka.jwt.service.SecurityService;
 import org.project.balabolkka.jwt.token.Token;
@@ -85,7 +90,14 @@ public class JwtTokenProvider {
                 .build()
                 .parseClaimsJws(token);
         } catch (ExpiredJwtException e) {
-            throw new RuntimeException("");
+            throw new ValidationException(JwtErrorMessage.JWT_TOKEN_EXPIRED.getMessage());
+        } catch (
+            SecurityException |
+            MalformedJwtException |
+            UnsupportedJwtException |
+            IllegalArgumentException e
+        ) {
+            throw new ValidationException(JwtErrorMessage.JWT_TOKEN_INVALID.getMessage());
         }
     }
 }

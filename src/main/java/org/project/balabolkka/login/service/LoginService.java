@@ -1,6 +1,7 @@
 package org.project.balabolkka.login.service;
 
 import lombok.RequiredArgsConstructor;
+import org.project.balabolkka.exception.BadRequestException;
 import org.project.balabolkka.jwt.provider.JwtTokenProvider;
 import org.project.balabolkka.jwt.token.Token;
 import org.project.balabolkka.login.dto.LoginRequest;
@@ -25,12 +26,12 @@ public class LoginService {
 
         //이메일을 통해 Member 가져옴
         Member loginMember = memberRepository.findMemberByEmail(loginRequest.getEmail())
-            .orElseThrow(() -> new BadCredentialsException(
+            .orElseThrow(() -> new BadRequestException(
                 LoginExceptionMessage.WRONG_PASSWORD.getMessage()));
 
         //password 확인
         if (!encoder.matches(loginRequest.getPassword(), loginMember.getPassword())) {
-            throw new BadCredentialsException(LoginExceptionMessage.WRONG_PASSWORD.getMessage());
+            throw new BadRequestException(LoginExceptionMessage.WRONG_PASSWORD.getMessage());
         }
 
         //token 생성

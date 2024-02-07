@@ -3,8 +3,8 @@ package org.project.balabolkka.member.service;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.project.balabolkka.exception.exceptions.AlreadyExistsException;
-import org.project.balabolkka.exception.exceptions.NotFoundException;
+import org.project.balabolkka.exception.AlreadyExistsException;
+import org.project.balabolkka.exception.NotFoundException;
 import org.project.balabolkka.member.dto.MemberDataResponseDto;
 import org.project.balabolkka.member.dto.MemberResponseDto;
 import org.project.balabolkka.member.dto.MemberSaveRequestDto;
@@ -44,7 +44,7 @@ public class MemberService {
         List<Member> allMember = memberRepository.findAll();
         return allMember.stream()
             .map(MemberMapper::responseDtoOfMember)
-            .collect(Collectors.toList());
+            .toList();
     }
 
     @Transactional(readOnly = true)
