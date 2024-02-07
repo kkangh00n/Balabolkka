@@ -10,18 +10,18 @@ import lombok.Getter;
 @Getter
 public class MemberDataResponseDto {
 
-    private Long id;
+    private final Long id;
 
-    private String name;
+    private final String name;
 
-    private String email;
+    private final String email;
 
-    private String address;
+    private final String address;
 
     @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate birth;
+    private final LocalDate birth;
 
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
 
     @Builder
     public MemberDataResponseDto(Long id, String name, String email, String address,

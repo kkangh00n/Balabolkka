@@ -1,12 +1,8 @@
 package org.project.balabolkka.exception.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+public record ErrorResult(
+    int code,
+    String message
+) {
 
-@Data
-@AllArgsConstructor
-public class ErrorResult<T> {
-
-    int code;
-    T data;
 }

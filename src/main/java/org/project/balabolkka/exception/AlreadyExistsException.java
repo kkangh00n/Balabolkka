@@ -1,4 +1,4 @@
-package org.project.balabolkka.exception.exceptions;
+package org.project.balabolkka.exception;
 
 public class AlreadyExistsException extends RuntimeException {
 

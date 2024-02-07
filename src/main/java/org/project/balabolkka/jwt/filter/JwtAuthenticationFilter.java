@@ -1,6 +1,6 @@
 package org.project.balabolkka.jwt.filter;
 
-import static org.springframework.http.HttpHeaders.*;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.GenericFilter;

@@ -6,11 +6,11 @@ import lombok.Getter;
 @Getter
 public class MemberResponseDto {
 
-    private Long id;
+    private final Long id;
 
-    private String name;
+    private final String name;
 
-    private String email;
+    private final String email;
 
     @Builder
     public MemberResponseDto(Long id, String name, String email) {
