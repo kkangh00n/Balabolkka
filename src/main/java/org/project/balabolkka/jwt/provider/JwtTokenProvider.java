@@ -58,7 +58,8 @@ public class JwtTokenProvider {
     public Authentication getAuthentication(String email) {
         UserDetails userDetails = securityService.loadUserByUsername(email);
 
-        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, null,
+            userDetails.getAuthorities());
     }
 
     private String createAccessToken(Claims claims, Date now) {
@@ -83,7 +84,7 @@ public class JwtTokenProvider {
             .compact();
     }
 
-    private Jws<Claims> getClaims (String token) {
+    private Jws<Claims> getClaims(String token) {
         try {
             return Jwts.parserBuilder()
                 .setSigningKey(signKey)
