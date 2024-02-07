@@ -44,7 +44,19 @@ public class JwtTokenProvider {
         return new Token(accessToken, refreshToken, email);
     }
 
-    public String createAccessToken(Claims claims, Date now) {
+    public String getEmail(String token) {
+        Jws<Claims> claims = getClaims(token);
+
+        return claims.getBody().getSubject();
+    }
+
+    public Authentication getAuthentication(String email) {
+        UserDetails userDetails = securityService.loadUserByUsername(email);
+
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    }
+
+    private String createAccessToken(Claims claims, Date now) {
         long expirySeconds = jwtConfig.getExpiryMinute() * 1000L * 60;
 
         return Jwts.builder()
@@ -66,31 +78,14 @@ public class JwtTokenProvider {
             .compact();
     }
 
-    public boolean validateToken(String accessToken) {
+    private Jws<Claims> getClaims (String token) {
         try {
-            Jws<Claims> claims = Jwts.parserBuilder()
+            return Jwts.parserBuilder()
                 .setSigningKey(signKey)
                 .build()
-                .parseClaimsJws(accessToken);
-            return !claims.getBody().getExpiration().before(new Date());
+                .parseClaimsJws(token);
         } catch (ExpiredJwtException e) {
-            return false;
+            throw new RuntimeException("");
         }
-    }
-
-    public Authentication getAuthentication(String token) {
-        String email = getEmail(token);
-        UserDetails userDetails = securityService.loadUserByUsername(email);
-        return new UsernamePasswordAuthenticationToken(userDetails, "",
-            userDetails.getAuthorities());
-    }
-
-    public String getEmail(String token) {
-        Jws<Claims> claims = Jwts.parserBuilder()
-            .setSigningKey(signKey)
-            .build()
-            .parseClaimsJws(token);
-
-        return claims.getBody().getSubject();
     }
 }
