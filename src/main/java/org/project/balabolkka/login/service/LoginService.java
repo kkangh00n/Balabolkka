@@ -1,6 +1,5 @@
 package org.project.balabolkka.login.service;
 
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.project.balabolkka.jwt.provider.JwtTokenProvider;
 import org.project.balabolkka.jwt.service.RefreshTokenService;
@@ -24,7 +23,7 @@ public class LoginService {
     private final RefreshTokenService refreshTokenService;
 
     @Transactional
-    public Token login(LoginRequest loginRequest, HttpServletResponse response) {
+    public Token login(LoginRequest loginRequest) {
 
         //이메일을 통해 Member 가져옴
         Member loginMember = memberRepository.findMemberByEmail(loginRequest.getEmail())

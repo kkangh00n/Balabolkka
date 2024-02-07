@@ -2,8 +2,8 @@ package org.project.balabolkka.login.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.project.balabolkka.jwt.token.Token;
 import org.project.balabolkka.login.dto.LoginRequest;
 import org.project.balabolkka.login.service.LoginService;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +23,9 @@ public class LoginController {
 
     @Operation(summary = "로그인")
     @PostMapping("/login")
-    public ResponseEntity login(@Validated @RequestBody LoginRequest loginRequest,
-        HttpServletResponse response) {
+    public ResponseEntity<Token> login(@Validated @RequestBody LoginRequest loginRequest) {
 
-        return ResponseEntity.ok(loginService.login(loginRequest, response));
+        return ResponseEntity.ok(loginService.login(loginRequest));
     }
 
 }
