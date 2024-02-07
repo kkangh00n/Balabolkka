@@ -5,9 +5,13 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import java.security.Key;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import org.project.balabolkka.jwt.config.JwtConfig;
+import org.project.balabolkka.jwt.service.RefreshTokenService;
 import org.project.balabolkka.jwt.service.SecurityService;
 import org.project.balabolkka.jwt.token.Token;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +25,10 @@ public class JwtTokenProvider {
 
     private final JwtConfig jwtConfig;
     private final SecurityService securityService;
+    private final RefreshTokenService refreshTokenService;
+
+    byte[] keyBytes = Decoders.BASE64.decode(jwtConfig.getClientSecret());
+    private final Key signKey = Keys.hmacShaKeyFor(keyBytes);
 
     public Token createJwtToken(String email) {
         Claims claims = Jwts.claims().setSubject(email);
@@ -30,17 +38,32 @@ public class JwtTokenProvider {
         String accessToken = createAccessToken(claims, now);
         String refreshToken = createRefreshToken(claims, now);
 
+        //refreshToken DB 저장
+        refreshTokenService.createRefreshToken(refreshToken, email);
+
         return new Token(accessToken, refreshToken, email);
     }
 
-    public String createAccessToken(Claims claims, Date now) {
+    public String getEmail(String token) {
+        Jws<Claims> claims = getClaims(token);
+
+        return claims.getBody().getSubject();
+    }
+
+    public Authentication getAuthentication(String email) {
+        UserDetails userDetails = securityService.loadUserByUsername(email);
+
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    }
+
+    private String createAccessToken(Claims claims, Date now) {
         long expirySeconds = jwtConfig.getExpiryMinute() * 1000L * 60;
 
         return Jwts.builder()
             .setClaims(claims)
             .setIssuedAt(now)
             .setExpiration(new Date(now.getTime() + expirySeconds))
-            .signWith(SignatureAlgorithm.HS256, jwtConfig.getClientSecret())
+            .signWith(signKey, SignatureAlgorithm.HS256)
             .compact();
     }
 
@@ -51,35 +74,18 @@ public class JwtTokenProvider {
             .setClaims(claims)
             .setIssuedAt(now)
             .setExpiration(new Date(now.getTime() + expirySecondsRefresh))
-            .signWith(SignatureAlgorithm.HS256, jwtConfig.getClientSecret())
+            .signWith(signKey, SignatureAlgorithm.HS256)
             .compact();
     }
 
-    public boolean validateToken(String accessToken) {
+    private Jws<Claims> getClaims (String token) {
         try {
-            Jws<Claims> claims = Jwts.parserBuilder()
-                .setSigningKey(jwtConfig.getClientSecret())
+            return Jwts.parserBuilder()
+                .setSigningKey(signKey)
                 .build()
-                .parseClaimsJws(accessToken);
-            return !claims.getBody().getExpiration().before(new Date());
+                .parseClaimsJws(token);
         } catch (ExpiredJwtException e) {
-            return false;
+            throw new RuntimeException("");
         }
-    }
-
-    public Authentication getAuthentication(String token) {
-        String email = getEmail(token);
-        UserDetails userDetails = securityService.loadUserByUsername(email);
-        return new UsernamePasswordAuthenticationToken(userDetails, "",
-            userDetails.getAuthorities());
-    }
-
-    public String getEmail(String token) {
-        Jws<Claims> claims = Jwts.parserBuilder()
-            .setSigningKey(jwtConfig.getClientSecret())
-            .build()
-            .parseClaimsJws(token);
-
-        return claims.getBody().getSubject();
     }
 }

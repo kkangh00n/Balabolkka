@@ -1,9 +1,7 @@
 package org.project.balabolkka.login.service;
 
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.project.balabolkka.jwt.provider.JwtTokenProvider;
-import org.project.balabolkka.jwt.service.RefreshTokenService;
 import org.project.balabolkka.jwt.token.Token;
 import org.project.balabolkka.login.dto.LoginRequest;
 import org.project.balabolkka.login.exception.LoginExceptionMessage;
@@ -21,10 +19,9 @@ public class LoginService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder encoder;
     private final JwtTokenProvider jwtTokenProvider;
-    private final RefreshTokenService refreshTokenService;
 
     @Transactional
-    public Token login(LoginRequest loginRequest, HttpServletResponse response) {
+    public Token login(LoginRequest loginRequest) {
 
         //이메일을 통해 Member 가져옴
         Member loginMember = memberRepository.findMemberByEmail(loginRequest.getEmail())
@@ -41,9 +38,6 @@ public class LoginService {
     }
 
     public Token createJwtToken(String email) {
-        Token token = jwtTokenProvider.createJwtToken(email);
-        //refreshtoken DB 저장
-        refreshTokenService.createRefreshToken(token);
-        return token;
+        return jwtTokenProvider.createJwtToken(email);
     }
 }
