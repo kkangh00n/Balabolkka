@@ -37,7 +37,12 @@ public class LoginService {
         return createJwtToken(loginMember.getEmail());
     }
 
-    public Token createJwtToken(String email) {
+    @Transactional
+    public void logout(Member member) {
+        jwtTokenProvider.deleteRefreshToken(member.getEmail());
+    }
+
+    private Token createJwtToken(String email) {
         return jwtTokenProvider.createJwtToken(email);
     }
 }

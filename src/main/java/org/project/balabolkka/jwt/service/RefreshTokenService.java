@@ -28,6 +28,11 @@ public class RefreshTokenService {
     }
 
     @Transactional
+    public void deleteRefreshToken(String email) {
+        refreshTokenRepository.deleteRefreshTokenByEmail(email);
+    }
+
+    @Transactional
     public RefreshToken getRefreshTokenByToken(String refreshToken) {
         return refreshTokenRepository.findRefreshTokenByToken(refreshToken)
             .orElseThrow();
