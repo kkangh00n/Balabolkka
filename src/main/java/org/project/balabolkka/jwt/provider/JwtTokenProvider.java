@@ -49,6 +49,10 @@ public class JwtTokenProvider {
         return new Token(accessToken, refreshToken, email);
     }
 
+    public void deleteRefreshToken(String email) {
+        refreshTokenService.deleteRefreshToken(email);
+    }
+
     public String getEmail(String token) {
         Jws<Claims> claims = getClaims(token);
 
